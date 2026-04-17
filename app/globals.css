@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* Анимация тумана */
+@keyframes fog {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(70px, 45px) scale(1.1); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-\[fog_65s_linear_infinite\] {
+  animation: fog 65s linear infinite;
+}
+
+.animate-\[fog_85s_linear_infinite_reverse\] {
+  animation: fog 85s linear infinite reverse;
+}
