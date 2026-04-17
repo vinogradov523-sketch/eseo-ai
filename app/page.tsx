@@ -9,25 +9,25 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Вариант анимации для stagger
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
+ const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2
     }
-  };
+  }
+} as any;
 
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 80 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.7, ease: "easeOut" }
-    }
-  };
+const cardVariants = {
+  hidden: { opacity: 0, y: 80 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" }
+  }
+} as any;
 
   const cardVariants = {
     hidden: { opacity: 0, y: 80 },
