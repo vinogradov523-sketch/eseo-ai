@@ -10,13 +10,13 @@ const config: Config = {
     extend: {
       keyframes: {
         fog: {
-          '0%': { transform: 'translate3d(0, 0, 0) scale(1)', opacity: '0.8' },
-          '50%': { transform: 'translate3d(2%, -2%, 0) scale(1.08)', opacity: '1' },
-          '100%': { transform: 'translate3d(-2%, 2%, 0) scale(1)', opacity: '0.85' },
+          '0%': { transform: 'translate3d(0, 0, 0) scale(1)', opacity: '0.7' },
+          '50%': { transform: 'translate3d(2%, -2%, 0) scale(1.06)', opacity: '1' },
+          '100%': { transform: 'translate3d(-2%, 2%, 0) scale(1)', opacity: '0.75' },
         },
       },
       animation: {
-        fog: 'fog 70s linear infinite',
+        fog: 'fog 80s linear infinite',
       },
       colors: {
         brand: {
@@ -33,7 +33,7 @@ const config: Config = {
         },
       },
       boxShadow: {
-        glow: '0 0 80px rgba(249, 115, 22, 0.2)',
+        glow: '0 0 60px rgba(249, 115, 22, 0.18)',
       },
     },
   },
