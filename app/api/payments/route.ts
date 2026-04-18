@@ -1,51 +1,94 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { supabaseAdmin } from '@/lib/db/supabase';
 
-// ЮKassa webhook handler
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { type, event, object } = body;
+    // Verify webhook signature (production)
+    // const signature = req.headers.get('x-yookassa-signature');
 
-    console.log('ЮKassa webhook:', type, event);
+    const body = await req.json();
+    const { event, object } = body;
 
     switch (event) {
       case 'payment.succeeded': {
-        const paymentId = object.id;
-        const amount = object.amount.value;
         const userId = object.metadata?.user_id;
+        const plan = object.metadata?.plan;
 
-        // TODO: Update user subscription in DB
-        // await db.user.update({
-        //   where: { id: userId },
-        //   data: { plan: 'pro', planExpiresAt: addMonths(new Date(), 1) },
-        // });
+        if (!userId || !plan) break;
 
-        console.log(`Payment succeeded: ${paymentId}, amount: ${amount}, user: ${userId}`);
+        const periodEnd = new Date();
+        periodEnd.setMonth(periodEnd.getMonth() + 1);
+
+        // Update user plan
+        await supabaseAdmin
+          .from('users')
+          .update({
+            plan,
+            plan_expires_at: periodEnd.toISOString(),
+            cards_limit: plan === 'pro' ? 999999 : 999999,
+            cards_used_this_month: 0,
+          })
+          .eq('id', userId);
+
+        // Save payment record
+        await supabaseAdmin.from('payments').insert({
+          user_id: userId,
+          yukassa_payment_id: object.id,
+          amount: parseFloat(object.amount.value),
+          currency: object.amount.currency,
+          status: 'succeeded',
+          plan,
+          period_start: new Date().toISOString(),
+          period_end: periodEnd.toISOString(),
+          metadata: object.metadata,
+        });
+
+        // Log activity
+        await supabaseAdmin.from('activity_log').insert({
+          user_id: userId,
+          action: 'payment_succeeded',
+          details: { payment_id: object.id, plan, amount: object.amount.value },
+        });
+
         break;
       }
 
       case 'payment.canceled': {
-        const paymentId = object.id;
-        console.log(`Payment canceled: ${paymentId}`);
+        await supabaseAdmin.from('payments').insert({
+          user_id: object.metadata?.user_id,
+          yukassa_payment_id: object.id,
+          amount: parseFloat(object.amount.value),
+          status: 'canceled',
+          plan: object.metadata?.plan || 'unknown',
+        });
         break;
       }
 
       case 'refund.succeeded': {
-        const refundId = object.id;
-        const paymentId = object.payment_id;
+        const { data: payment } = await supabaseAdmin
+          .from('payments')
+          .select('user_id')
+          .eq('yukassa_payment_id', object.payment_id)
+          .single();
 
-        // TODO: Downgrade user plan
-        console.log(`Refund succeeded: ${refundId} for payment ${paymentId}`);
+        if (payment) {
+          await supabaseAdmin
+            .from('users')
+            .update({ plan: 'starter', cards_limit: 5 })
+            .eq('id', payment.user_id);
+
+          await supabaseAdmin
+            .from('payments')
+            .update({ status: 'refunded' })
+            .eq('yukassa_payment_id', object.payment_id);
+        }
         break;
       }
-
-      default:
-        console.log(`Unhandled event: ${event}`);
     }
 
     return NextResponse.json({ status: 'ok' });
   } catch (error) {
-    console.error('ЮKassa webhook error:', error);
-    return NextResponse.json({ error: 'Webhook processing error' }, { status: 500 });
+    console.error('Webhook error:', error);
+    return NextResponse.json({ error: 'Error' }, { status: 500 });
   }
 }
