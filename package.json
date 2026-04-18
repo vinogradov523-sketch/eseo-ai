@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-   "lint": "eslint .",
+    "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "@sentry/nextjs": "^9.25.0",
+    "@sentry/nextjs": "^10.49.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
