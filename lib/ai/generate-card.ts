@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';

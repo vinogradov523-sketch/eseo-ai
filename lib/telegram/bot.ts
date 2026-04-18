@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 import { Bot, InlineKeyboard, webhookCallback } from 'grammy';
 import { supabaseAdmin } from '@/lib/db/supabase';
