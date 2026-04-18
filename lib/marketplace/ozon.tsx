@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const OZON_API_BASE = 'https://api-seller.ozon.ru';
 
 interface OzonApiConfig {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function generateCSV(cards: any[]): string {
   const headers = ['Заголовок', 'Описание', 'Маркетплейс', 'SEO Score', 'Ключевые слова', 'Дата'];
   const rows = cards.map((card) => [

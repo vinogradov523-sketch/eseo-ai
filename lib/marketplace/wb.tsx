@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const WB_API_BASE = 'https://suppliers-api.wildberries.ru';
 const WB_STATS_BASE = 'https://statistics-api.wildberries.ru';
 const WB_CONTENT_BASE = 'https://content-api.wildberries.ru';
