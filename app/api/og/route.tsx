@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+// Важно: меняем с 'edge' на 'nodejs' — это решает лимит в 1 МБ
+export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -93,6 +94,9 @@ export async function GET(request: Request) {
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    { 
+      width: 1200, 
+      height: 630 
+    }
   );
 }
