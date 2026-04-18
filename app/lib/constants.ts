@@ -17,7 +17,7 @@ import type {
   FaqItem,
   BlogPost,
   ComparisonRow,
-} from './types';
+} from '@/lib/types';
 
 /* ───── Navigation ───── */
 export const NAV_LINKS: NavLink[] = [

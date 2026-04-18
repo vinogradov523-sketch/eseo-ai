@@ -69,3 +69,19 @@ export async function sendContactNotification(name: string, email: string, messa
     `,
   });
 }
+export async function sendEmail({
+  to,
+  subject,
+  html,
+}: {
+  to: string;
+  subject: string;
+  html: string;
+}) {
+  return resend.emails.send({
+    from: 'ESEO <noreply@eseo-ai.ru>',
+    to,
+    subject,
+    html,
+  });
+}
