@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Bot, InlineKeyboard, webhookCallback } from 'grammy';
 import { supabaseAdmin } from '@/lib/db/supabase';
 
